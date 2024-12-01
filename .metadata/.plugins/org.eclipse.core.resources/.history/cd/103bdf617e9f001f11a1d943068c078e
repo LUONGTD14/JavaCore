@@ -1,0 +1,35 @@
+package spoj;
+public class ChainedExceptionExample {
+    public static void main(String[] args) {
+        String[] scores = {"85", "90", null, "75"}; // Giả sử một giá trị "A+" không hợp lệ
+        try {
+            processScores(scores);
+        } catch (AverageCalculationException e) {
+            System.out.println("Lỗi khi tính điểm trung bình: " + e.getMessage());
+            System.out.println("Nguyên nhân gốc: " + e.getCause()); // Hiển thị nguyên nhân gốc (NumberFormatException)
+        }
+    }
+
+    public static void processScores(String[] scores) throws AverageCalculationException {
+        int total = 0;
+        try {
+            for (String score : scores) {
+                // Chuyển đổi chuỗi sang số nguyên
+                total += Integer.parseInt(score); // Có thể ném NumberFormatException
+            }
+            double average = total / scores.length;
+            System.out.println("Điểm trung bình: " + average);
+        } catch (NumberFormatException e) {
+            // Nếu có lỗi, ta tạo ngoại lệ AverageCalculationException và liên kết nguyên nhân
+            throw new AverageCalculationException("Không thể tính toán vì dữ liệu điểm không hợp lệ", e);
+        }
+    }
+}
+
+// Định nghĩa ngoại lệ tùy chỉnh để xử lý lỗi tính toán
+class AverageCalculationException extends Exception {
+    public AverageCalculationException(String message, Throwable cause) {
+        super(message, cause);
+    }
+}
+

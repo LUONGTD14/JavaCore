@@ -1,0 +1,18 @@
+package spoj;
+public class ChainedExceptionExample {
+    public static void main(String[] args) {
+        try {
+            // Ngoại lệ ban đầu
+            NumberFormatException numberFormatException = new NumberFormatException("Lỗi chuyển đổi chuỗi thành số");
+            
+            // Gây ra ngoại lệ thứ hai và liên kết với ngoại lệ ban đầu
+            ArithmeticException arithmeticException = new ArithmeticException("Lỗi toán học xảy ra do lỗi chuyển đổi số");
+            arithmeticException.initCause(numberFormatException); // Liên kết ngoại lệ gốc
+            
+            throw arithmeticException; // Ném ngoại lệ với nguyên nhân gốc
+        } catch (ArithmeticException e) {
+            System.out.println("Ngoại lệ hiện tại: " + e);
+            System.out.println("Nguyên nhân gốc: " + e.getCause()); // Lấy nguyên nhân gốc
+        }
+    }
+}
